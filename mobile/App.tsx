@@ -7,7 +7,7 @@ export default function App() {
   return (
     <TamaguiProvider config={config} defaultTheme="light">
       <YStack f={1} jc="center" ai="center" bc="$background">
-        <Text color="black" fontSize={20}>Controll Med Mobile</Text>
+        <Text color="black" fontSize={20}></Text>
       </YStack>
     </TamaguiProvider>
   )
