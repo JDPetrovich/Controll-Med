@@ -1,30 +1,12 @@
-import { createAnimations } from '@tamagui/animations-react-native'
-import { createTamagui, createFont } from 'tamagui'
-import { config } from '@tamagui/config/v3'
+import { defaultConfig } from '@tamagui/config/v4'
+import { createTamagui } from 'tamagui'
 
-// Configuração de animações (obrigatório para vários componentes)
-const animations = createAnimations({
-  fast: {
-    type: 'spring',
-    damping: 20,
-    stiffness: 250,
-  },
-  medium: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 100,
-  },
-})
+export const config = createTamagui(defaultConfig)
 
-const tamaguiConfig = createTamagui({
-  ...config,
-  animations,
-})
+export default config
 
-export type AppConfig = typeof tamaguiConfig
+export type Conf = typeof config
 
 declare module 'tamagui' {
-  interface TamaguiCustomConfig extends AppConfig {}
+  interface TamaguiCustomConfig extends Conf {}
 }
-
-export default tamaguiConfig
