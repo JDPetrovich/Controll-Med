@@ -2,8 +2,12 @@ import { Stack } from 'expo-router'
 
 const TabLayout = () => {
     return (
-        <Stack>
-            <Stack.Screen name="login"/>
+        <Stack >
+            <Stack.Screen name="login"
+                options={{
+                    headerShown: false
+                }}
+            />
         </Stack>
     )
 }
