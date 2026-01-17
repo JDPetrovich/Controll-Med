@@ -7,7 +7,7 @@ let janela: BrowserWindow | null = null;
 
 export default function Principal() {
   janela = new BrowserWindow({
-    title: "SarsDev",
+    title: "Controll Med",
     show: true,
     webPreferences: {
       preload: path.join(__dirname, "../preload.js"),
@@ -20,7 +20,8 @@ export default function Principal() {
   Menu.setApplicationMenu(null);
 
   if (!app.isPackaged) {
-    janela.loadURL('http://localhost:5173/');
+     const frontUrl = process.env.FRONTEND_URL!
+    janela.loadURL(frontUrl);
   } else {
     const indexPath = path.resolve(
       __dirname,

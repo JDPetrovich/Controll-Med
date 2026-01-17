@@ -6,7 +6,7 @@ let db: DatabaseSQLite | null = null;
 
 export function getDatabase() {
     if (!db) {
-        const caminhoBanco = path.join(app.getPath("userData"), "Importacao_Verba.sqlite");
+        const caminhoBanco = path.join(app.getPath("userData"), "Controll_med.sqlite");
         db = new DatabaseSQLite(caminhoBanco);
     }
     return db;

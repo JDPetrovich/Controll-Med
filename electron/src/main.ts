@@ -2,23 +2,20 @@ import { app, BrowserWindow } from "electron";
 if (!app.isPackaged) {
     await import("dotenv/config");
 }
-import Principal from "./app/principal.js";
+import ControllMed from "./app/ControllMed.js";
 import { getDatabase } from "./module/sqlitedb/dbInstance.js";
 
 app.whenReady().then(async () => {
-    /*
-    const config = getAppConfig();
+    
     const db = getDatabase();
-    await db.conectar();
-    */
+    await db.conectar();   
 
-    Principal();
+    ControllMed();
 });
 
 app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
-        // const config = getAppConfig();
-        Principal();
+        ControllMed();
     }
 });
 
