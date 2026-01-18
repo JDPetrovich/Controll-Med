@@ -25,15 +25,20 @@ export default function Principal() {
     }, []);
 
     return (
-        <div className="min-h-screen bg-background text-foreground">
+        <div className="min-h-screen text-gray-800">
             <Header />
 
             <main className="flex flex-col items-center gap-6 mt-20">
-                <h1 className="text-3xl font-bold">Seja bem-vindo</h1>
+                <h1 className="text-3xl font-semibold text-slate-800">
+                    Seja bem-vindo
+                </h1>
+                <p className="text-slate-500">
+                    Gerencie pacientes e cuidados diários
+                </p>
 
                 {/* CARD GRANDE */}
-                <div className="w-full max-w-7xl rounded-2xl border p-6 bg-gray-50">
-                    <h2 className="text-xl font-semibold mb-4">
+                <div className="w-full max-w-7xl rounded-2xl p-6 bg-white border border-gray-200 shadow-sm">
+                    <h2 className="text-xl font-semibold text-slate-700 mb-4">
                         Pacientes
                     </h2>
 

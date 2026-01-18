@@ -16,9 +16,9 @@ type Props = {
 export function CreatePacienteModal({ open, onOpenChange, paciente }: Props) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-2xl rounded-2xl">
         <DialogHeader>
-          <DialogTitle>{paciente ? "Editar paciente" : "Novo paciente"}</DialogTitle>
+          <DialogTitle className="text-xl font-semibold text-gray-800">{paciente ? "Editar paciente" : "Novo paciente"}</DialogTitle>
         </DialogHeader>
 
         <CreateUserForm

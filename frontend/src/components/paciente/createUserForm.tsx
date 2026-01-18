@@ -30,8 +30,8 @@ export function CreateUserForm({ paciente, onSuccess }: Props) {
     reset,
     setValue,
     formState: { errors },
-  } = useForm<UsuarioFormInput>({
-    resolver: zodResolver(usuarioSchema) as any, // 👈 IGUAL AO ANTIGO
+  } = useForm<UsuarioFormInput, any, UsuarioFormOutput>({
+    resolver: zodResolver(usuarioSchema),
     defaultValues: {
       nomeusuario: "",
       idadeusuario: "",
@@ -50,7 +50,7 @@ export function CreateUserForm({ paciente, onSuccess }: Props) {
     }
   }, [paciente, reset]);
 
-  async function onSubmit(data: UsuarioFormInput) {
+  async function onSubmit(data: UsuarioFormOutput) {
     try {
       setLoading(true);
 
@@ -74,95 +74,135 @@ export function CreateUserForm({ paciente, onSuccess }: Props) {
 
           {/* Nome */}
           <div className="grid gap-1">
-            <Label>Nome</Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="nomeusuario">Nome</Label>
+              <span
+                id="nomeusuario-error"
+                className="text-xs text-red-600 min-h-4"
+              >
+                {errors.nomeusuario?.message ?? ""}
+              </span>
+            </div>
+
             <Input
+              id="nomeusuario"
               {...register("nomeusuario")}
               placeholder="Informe o Nome"
+              aria-invalid={!!errors.nomeusuario}
+              aria-describedby="nomeusuario-error"
             />
-            {errors.nomeusuario && (
-              <p className="text-sm text-red-600">
-                {errors.nomeusuario.message}
-              </p>
-            )}
           </div>
 
           {/* Idade */}
           <div className="grid gap-1">
-            <Label>Idade</Label>
-            <Input type="number" min={1}
+            <div className="flex items-center justify-between">
+              <Label htmlFor="idadeusuario">Idade</Label>
+              <span
+                id="idadeusuario-error"
+                className="text-xs text-red-600 min-h-4"
+              >
+                {errors.idadeusuario?.message ?? ""}
+              </span>
+            </div>
+
+            <Input
+              id="idadeusuario"
+              type="number"
+              min={1}
               {...register("idadeusuario")}
               placeholder="Informe a Idade"
+              aria-invalid={!!errors.idadeusuario}
+              aria-describedby="idadeusuario-error"
               className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             />
-            {errors.idadeusuario && (
-              <p className="text-sm text-red-600">
-                {errors.idadeusuario.message}
-              </p>
-            )}
           </div>
 
           {/* Código */}
           <div className="grid gap-1">
-            <Label>Código</Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="codusuario">Código</Label>
+              <span
+                id="codusuario-error"
+                className="text-xs text-red-600 min-h-4"
+              >
+                {errors.codusuario?.message ?? ""}
+              </span>
+            </div>
+
             <Input
-              {...register("codusuario")}
+              id="codusuario"
+              {...register("codusuario", {
+                onChange: (e) => {
+                  e.target.value = e.target.value.toUpperCase();
+                }
+              })}
               placeholder="Ex: ADM"
+              aria-invalid={!!errors.codusuario}
+              aria-describedby="codusuario-error"
             />
-            {errors.codusuario && (
-              <p className="text-sm text-red-600">
-                {errors.codusuario.message}
-              </p>
-            )}
           </div>
 
           {/* Senha */}
           <div className="grid gap-1 relative">
-            <Label>Senha</Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="senhausuario">Senha</Label>
+              <span
+                id="senhausuario-error"
+                className="text-xs text-red-600 min-h-4"
+              >
+                {errors.senhausuario?.message ?? ""}
+              </span>
+            </div>
+
             <Input
+              id="senhausuario"
               type={showPassword ? "text" : "password"}
               placeholder="Informe uma Senha"
               className="pr-10"
               {...register("senhausuario")}
+              aria-invalid={!!errors.senhausuario}
+              aria-describedby="senhausuario-error"
             />
+
             <button
               type="button"
               onClick={() => setShowPassword((prev) => !prev)}
               className="absolute right-3 top-1/2 text-gray-500 hover:text-gray-700"
               tabIndex={-1}
             >
-              {showPassword ? (
-                <EyeOff className="h-5 w-5" />
-              ) : (
-                <Eye className="h-5 w-5" />
-              )}
+              {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
             </button>
-            {errors.senhausuario && (
-              <p className="text-sm text-red-600">
-                {errors.senhausuario.message}
-              </p>
-            )}
           </div>
 
           {/* CPF */}
           <div className="grid gap-1 md:col-span-2">
-            <Label>CPF</Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="cpfusuario">CPF</Label>
+              <span
+                id="cpfusuario-error"
+                className="text-xs text-red-600 min-h-4"
+              >
+                {errors.cpfusuario?.message ?? ""}
+              </span>
+            </div>
+
             <Input
+              id="cpfusuario"
               placeholder="000.000.000-00"
               {...register("cpfusuario")}
               onChange={(e) =>
                 setValue("cpfusuario", maskCPF(e.target.value))
               }
+              aria-invalid={!!errors.cpfusuario}
+              aria-describedby="cpfusuario-error"
             />
-            {errors.cpfusuario && (
-              <p className="text-sm text-red-600">
-                {errors.cpfusuario.message}
-              </p>
-            )}
           </div>
         </CardContent>
 
         <CardFooter>
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button
+            type="submit"
+            className="w-full bg-teal-500 hover:bg-teal-600 text-white" disabled={loading}>
             {loading ? "Salvando..." : "Salvar"}
           </Button>
         </CardFooter>

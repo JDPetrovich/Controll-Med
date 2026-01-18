@@ -9,7 +9,7 @@ createRoot(document.getElementById('root')!).render(
     <HashRouter>
       <Routes>
         <Route path="/" element={<Principal />} />
-        <Route path="/login" element={<Principal />} />
+        <Route path="/principal" element={<Principal />} />
         <Route path="*" element={<div className="not-found">404 - Página não encontrada</div>} />
       </Routes>
     </HashRouter>

@@ -26,19 +26,19 @@ export function validarCpf(cpf: string) {
 }
 
 export const usuarioSchema = z.object({
-    nomeusuario: z.string().min(1, "Nome é obrigatório"),
+    nomeusuario: z.string().min(1, "*Nome é obrigatório"),
 
     idadeusuario: z.string()
-    .min(1, "Idade é obrigatório")
-    .transform((v) => Number(v))
-    .pipe(z.number().min(0, "Idade deve ser positiva")),
+        .min(1, "*Idade é obrigatório")
+        .transform((v) => Number(v))
+        .pipe(z.number().min(0, "*A idade deve ser positiva")),
 
-    codusuario: z.string().min(1, "Código é obrigatório"),
+    codusuario: z.string().min(1, "*Código é obrigatório").transform((v) => v.toUpperCase()),
 
-    senhausuario: z.string().min(6, "Senha mínimo 6 caracteres"),
-    
+    senhausuario: z.string().min(8, "*Senha mínimo 8 caracteres"),
+
     cpfusuario: z.string()
-        .min(1, "CPF é obrigatório")
+        .min(1, "*CPF é obrigatório")
         .transform((val) => val.replace(/[^\d]+/g, ''))
         .refine(validarCpf, { message: "CPF inválido" }),
 });

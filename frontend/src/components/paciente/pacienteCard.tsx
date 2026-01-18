@@ -14,18 +14,19 @@ export function PacienteCard({ nome, idade, cpf, onClick, onEdit }: Props) {
     <div
       onClick={onClick}
       className="
-        w-full h-36
-        rounded-xl border
-        p-4
-        flex flex-col justify-between
-        cursor-pointer
-        bg-gray-300
-        hover:bg-gray-400
-        hover:shadow-md
-        active:scale-[0.98]
-        transition
-        relative
-      "
+    w-full h-36
+    rounded-2xl
+    border border-slate-200
+    p-4
+    flex flex-col justify-between
+    cursor-pointer
+    bg-white
+   hover:border-teal-400
+    hover:shadow-md
+    active:scale-[0.98]
+    transition
+    relative
+  "
     >
       {/* BOTÃO DE EDITAR */}
       <button
@@ -34,21 +35,21 @@ export function PacienteCard({ nome, idade, cpf, onClick, onEdit }: Props) {
           onEdit?.();
         }}
         className="
-          absolute top-2 right-2
-          p-1 rounded-md
-          hover:bg-black/10
-          transition
-        "
+    absolute top-2 right-2
+    p-2 rounded-full
+    hover:bg-slate-100
+    transition
+  "
       >
-        <Pencil className="w-5 h-5 text-orange-600" />
+        <Pencil className="w-4 h-4  text-slate-500" />
       </button>
 
       <div>
-        <p className="font-semibold truncate">{nome}</p>
-        <p className="text-sm text-muted-foreground">Idade: {idade} anos</p>
+        <p className="font-semibold text-slate-800 truncate">{nome}</p>
+        <p className="text-sm text-slate-500">Idade: {idade} anos</p>
       </div>
 
-      <p className="text-xs text-muted-foreground truncate">{maskCPF(cpf)}</p>
+      <p className="text-xs text-gray-400 truncate">{maskCPF(cpf)}</p>
     </div>
   );
 }
