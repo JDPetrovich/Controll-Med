@@ -4,8 +4,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { CreateUserForm } from "./createUserForm";
 import type { UsuarioFormInput } from "@/schema/usuario.schema";
+import { CreateUserForm } from "../form/createUserForm";
 
 type Props = {
   open: boolean;

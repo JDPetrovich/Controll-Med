@@ -1,4 +1,5 @@
 import { IInfoAdicionalIpc } from "@/interfaces/infoadicional.interface";
+import type { UsuarioFormOutput } from "./schema/usuario.schema";
 
 export { };
 
@@ -10,10 +11,10 @@ declare global {
             invoke: (channel: string, ...args: any[]) => Promise<any>;
             
             buscarUsuarios: () => Promise<IUsuario>;
+            criarUsuario: (dadosUsuario: UsuarioFormOutput) => Promise<void>;
         }
     }
 }
-
 
 export interface RespostaIpc<T = any> {
     sucesso: boolean;

@@ -54,15 +54,20 @@ export function CreateUserForm({ paciente, onSuccess }: Props) {
     try {
       setLoading(true);
 
-      const validatedData = data as unknown as UsuarioFormOutput;
+      const payload: UsuarioFormOutput = {
+        ...data,
+        cpfusuario: data.cpfusuario.replace(/\D/g, ""),
+      };
 
-      console.log("Dados Limpos:", {
-        ...validatedData,
-        cpfusuario: validatedData.cpfusuario.replace(/\D/g, ""),
-      });
+      console.log("Enviando para IPC:", payload);
+
+      await window.ipc.criarUsuario(payload);
 
       onSuccess?.();
-    } finally {
+      reset();
+    } catch(error){
+      console.error("Erro ao criar usuário:", error);
+    }finally {
       setLoading(false);
     }
   }

@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Header } from "@/components/header/header";
-import { CreatePacienteModal } from "@/components/paciente/createPacienteModal";
-import { PacienteCard } from "@/components/paciente/pacienteCard";
-import { AddPacienteCard } from "@/components/paciente/addPacienteCard";
+
 import type { UsuarioFormInput } from "@/schema/usuario.schema";
+import { AddPacienteCard } from "@/components/paciente/card/addPacienteCard";
+import { PacienteCard } from "@/components/paciente/card/pacienteCard";
+import { CreatePacienteModal } from "@/components/paciente/modal/createPacienteModal";
 
 export default function Principal() {
     const [open, setOpen] = useState(false);

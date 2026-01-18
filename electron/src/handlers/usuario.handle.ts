@@ -32,4 +32,13 @@ export async function usuariohandle() {
             return prepararRespostaUsuario([], false, (error as Error).message);
         }
     });
+
+    ipcMain.handle("criar-usuario", async (_, dadosUsuario: IUsuario) => {
+        try {
+            await repo.criarUsuario(dadosUsuario);
+            return prepararRespostaUsuario([], true, "Usuário criado com sucesso!");
+        } catch (error) {
+            return prepararRespostaUsuario([], false, (error as Error).message);
+        }
+    })
 }
