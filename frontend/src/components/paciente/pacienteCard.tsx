@@ -1,11 +1,12 @@
+import { maskCPF } from "@/utils/maskCpf";
 import { Pencil } from "lucide-react";
 
 type Props = {
   nome: string;
   idade: string;
   cpf: string;
-  onClick?: () => void;   
-  onEdit?: () => void;  
+  onClick?: () => void;
+  onEdit?: () => void;
 };
 
 export function PacienteCard({ nome, idade, cpf, onClick, onEdit }: Props) {
@@ -29,7 +30,7 @@ export function PacienteCard({ nome, idade, cpf, onClick, onEdit }: Props) {
       {/* BOTÃO DE EDITAR */}
       <button
         onClick={(e) => {
-          e.stopPropagation(); 
+          e.stopPropagation();
           onEdit?.();
         }}
         className="
@@ -44,10 +45,10 @@ export function PacienteCard({ nome, idade, cpf, onClick, onEdit }: Props) {
 
       <div>
         <p className="font-semibold truncate">{nome}</p>
-        <p className="text-sm text-muted-foreground">Idade: {idade}</p>
+        <p className="text-sm text-muted-foreground">Idade: {idade} anos</p>
       </div>
 
-      <p className="text-xs text-muted-foreground truncate">{cpf}</p>
+      <p className="text-xs text-muted-foreground truncate">{maskCPF(cpf)}</p>
     </div>
   );
 }

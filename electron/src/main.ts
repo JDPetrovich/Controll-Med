@@ -4,11 +4,13 @@ if (!app.isPackaged) {
 }
 import ControllMed from "./app/ControllMed.js";
 import { getDatabase } from "./module/sqlitedb/dbInstance.js";
+import { usuariohandle } from "./handlers/usuario.handle.js";
 
 app.whenReady().then(async () => {
     
     const db = getDatabase();
     await db.conectar();   
+    usuariohandle();
 
     ControllMed();
 });

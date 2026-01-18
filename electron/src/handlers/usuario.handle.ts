@@ -1,5 +1,5 @@
 import { ipcMain } from "electron";
-import {UsuarioRepository} from "../repository/usuario.repository.js";
+import { UsuarioRepository } from "../repository/usuario.repository.js";
 import IUsuario from "../interfaces/usuario/usuario.interface";
 import ITelaUsuario from "../interfaces/usuario/telaUsuario.interface.js";
 
@@ -21,14 +21,14 @@ const prepararRespostaUsuario = (
     }
 }
 
-export async function usuariohandle(){
+export async function usuariohandle() {
     const repo = new UsuarioRepository();
 
-    ipcMain.handle("retornar-usuarios", async () =>{
-        try{
-            const usuario=await reportError.buscarUsuarios();
+    ipcMain.handle("retornar-usuarios", async () => {
+        try {
+            const usuario = await repo.buscarUsuarios();
             return prepararRespostaUsuario(usuario);
-        }catch(error){
+        } catch (error) {
             return prepararRespostaUsuario([], false, (error as Error).message);
         }
     });

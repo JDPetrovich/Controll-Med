@@ -1,7 +1,8 @@
-/* import IUsuario from "../interfaces/usuario/usuario.interface";
+import IUsuario from "../interfaces/usuario/usuario.interface";
 import { getDatabase } from "../module/sqlitedb/dbInstance.js";
 
 const db = getDatabase();
+
 class UsuarioRepository{
  async buscarUsuarios(): Promise<IUsuario[]> {
     const query=`
@@ -16,7 +17,9 @@ class UsuarioRepository{
     `;
 
     const resultado = await db.consultar<IUsuario>(query, []);
+    return resultado;
  }
+ 
 }
 
-export { UsuarioRepository }; */
+export { UsuarioRepository };

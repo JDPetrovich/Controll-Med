@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-function validarCpf(cpf: string) {
+export function validarCpf(cpf: string) {
     cpf = cpf.replace(/[^\d]+/g, '');
 
     if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
@@ -28,21 +28,20 @@ function validarCpf(cpf: string) {
 export const usuarioSchema = z.object({
     nomeusuario: z.string().min(1, "Nome é obrigatório"),
 
-    idadeusuario: z.coerce
-        .number("Idade deve ser um número")
-        .int()
-        .positive("Idade deve ser maior que 0"),
+    idadeusuario: z.string()
+    .min(1, "Idade é obrigatório")
+    .transform((v) => Number(v))
+    .pipe(z.number().min(0, "Idade deve ser positiva")),
 
     codusuario: z.string().min(1, "Código é obrigatório"),
 
     senhausuario: z.string().min(6, "Senha mínimo 6 caracteres"),
-
-    cpfusuario: z.coerce
-        .string()
+    
+    cpfusuario: z.string()
+        .min(1, "CPF é obrigatório")
         .transform((val) => val.replace(/[^\d]+/g, ''))
         .refine(validarCpf, { message: "CPF inválido" }),
 });
 
-
-export type UsuarioInput = z.input<typeof usuarioSchema>;
-export type UsuarioOutput = z.output<typeof usuarioSchema>;
+export type UsuarioFormInput = z.input<typeof usuarioSchema>;
+export type UsuarioFormOutput = z.output<typeof usuarioSchema>;

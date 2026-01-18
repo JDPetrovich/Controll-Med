@@ -17,10 +17,22 @@ export default function Principal() {
     },
   });
 
-  Menu.setApplicationMenu(null);
+  if (!app.isPackaged) {
+    const menu = Menu.buildFromTemplate([
+      {
+        role: "viewMenu", 
+      },
+      {
+        role: "windowMenu",
+      },
+    ]);
+    Menu.setApplicationMenu(menu);
+  } else {
+    Menu.setApplicationMenu(null);
+  }
 
   if (!app.isPackaged) {
-     const frontUrl = process.env.FRONTEND_URL!
+    const frontUrl = process.env.FRONTEND_URL!
     janela.loadURL(frontUrl);
   } else {
     const indexPath = path.resolve(
@@ -32,6 +44,12 @@ export default function Principal() {
     });
   }
 
+  janela.webContents.on("before-input-event", (event, input) => {
+    if (input.key === "F12") {
+      event.preventDefault();
+      janela?.webContents.toggleDevTools();
+    }
+  });
 
   janela.webContents.on('devtools-opened', () => {
     console.clear();

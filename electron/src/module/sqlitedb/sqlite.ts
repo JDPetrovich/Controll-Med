@@ -23,9 +23,9 @@ export class DatabaseSQLite {
         this.conexao = undefined;
     }
 
-    async consultar(sql: string, params: any[] = []) {
+    async consultar<T>(sql: string, params: any[] = []): Promise<T[]> {
         if (!this.conexao) throw new Error("Banco de dados não conectado!");
-        return await this.conexao.all(sql, params);
+        return await this.conexao.all<T[]>(sql, params);
     }
 
     async executar(sql: string, params: any[] = []) {

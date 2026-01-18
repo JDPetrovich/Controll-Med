@@ -1,157 +1,172 @@
-import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-import { usuarioSchema, type UsuarioInput } from '@/schema/usuario.schema';
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Eye, EyeOff } from "lucide-react";
+
+import { maskCPF } from "@/utils/maskCpf";
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
-import { Input } from '../ui/input';
-import { Button } from '../ui/button';
-import { maskCPF } from '@/utils/maskCpf';
+  usuarioSchema,
+  type UsuarioFormInput,
+  type UsuarioFormOutput,
+} from "@/schema/usuario.schema";
 
 type Props = {
-  paciente?: UsuarioInput;   
+  paciente?: UsuarioFormInput;
   onSuccess?: () => void;
 };
 
 export function CreateUserForm({ paciente, onSuccess }: Props) {
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  const form = useForm<UsuarioInput>({
-    resolver: zodResolver(usuarioSchema),
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm<UsuarioFormInput>({
+    resolver: zodResolver(usuarioSchema) as any, // 👈 IGUAL AO ANTIGO
     defaultValues: {
-      nomeusuario: '',
-      idadeusuario: '',
-      codusuario: '',
-      senhausuario: '',
-      cpfusuario: '',
+      nomeusuario: "",
+      idadeusuario: "",
+      codusuario: "",
+      senhausuario: "",
+      cpfusuario: "",
     },
   });
 
   useEffect(() => {
     if (paciente) {
-      form.reset({
+      reset({
         ...paciente,
-        idadeusuario: String(paciente.idadeusuario),
-      });
-    } else {
-      form.reset({
-        nomeusuario: '',
-        idadeusuario: '',
-        codusuario: '',
-        senhausuario: '',
-        cpfusuario: '',
+        cpfusuario: maskCPF(paciente.cpfusuario ?? ""),
       });
     }
-  }, [paciente]);
+  }, [paciente, reset]);
 
-  async function onSubmit(data: UsuarioInput) {
+  async function onSubmit(data: UsuarioFormInput) {
     try {
       setLoading(true);
-      console.log('Salvando paciente:', data);
-      form.reset();
+
+      const validatedData = data as unknown as UsuarioFormOutput;
+
+      console.log("Dados Limpos:", {
+        ...validatedData,
+        cpfusuario: validatedData.cpfusuario.replace(/\D/g, ""),
+      });
+
       onSuccess?.();
     } finally {
       setLoading(false);
     }
   }
+
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-grid grid-cols-1 md:grid-cols-2 gap-4"
-      >
+    <Card>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4 py-2">
 
-        <FormField
-          control={form.control}
-          name="nomeusuario"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="">Nome:</FormLabel>
-              <FormControl>
-                <Input placeholder="Nome do usuário" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          {/* Nome */}
+          <div className="grid gap-1">
+            <Label>Nome</Label>
+            <Input
+              {...register("nomeusuario")}
+              placeholder="Informe o Nome"
+            />
+            {errors.nomeusuario && (
+              <p className="text-sm text-red-600">
+                {errors.nomeusuario.message}
+              </p>
+            )}
+          </div>
 
-        <FormField
-          control={form.control}
-          name="idadeusuario"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Idade:</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Idade"
-                  value={String(field.value ?? '')}
-                  onChange={field.onChange}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          {/* Idade */}
+          <div className="grid gap-1">
+            <Label>Idade</Label>
+            <Input type="number" min={1}
+              {...register("idadeusuario")}
+              placeholder="Informe a Idade"
+              className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            />
+            {errors.idadeusuario && (
+              <p className="text-sm text-red-600">
+                {errors.idadeusuario.message}
+              </p>
+            )}
+          </div>
 
-        <FormField
-          control={form.control}
-          name="codusuario"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Código:</FormLabel>
-              <FormControl>
-                <Input placeholder="Código" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          {/* Código */}
+          <div className="grid gap-1">
+            <Label>Código</Label>
+            <Input
+              {...register("codusuario")}
+              placeholder="Ex: ADM"
+            />
+            {errors.codusuario && (
+              <p className="text-sm text-red-600">
+                {errors.codusuario.message}
+              </p>
+            )}
+          </div>
 
-        <FormField
-          control={form.control}
-          name="senhausuario"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Senha:</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="Senha" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          {/* Senha */}
+          <div className="grid gap-1 relative">
+            <Label>Senha</Label>
+            <Input
+              type={showPassword ? "text" : "password"}
+              placeholder="Informe uma Senha"
+              className="pr-10"
+              {...register("senhausuario")}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-3 top-1/2 text-gray-500 hover:text-gray-700"
+              tabIndex={-1}
+            >
+              {showPassword ? (
+                <EyeOff className="h-5 w-5" />
+              ) : (
+                <Eye className="h-5 w-5" />
+              )}
+            </button>
+            {errors.senhausuario && (
+              <p className="text-sm text-red-600">
+                {errors.senhausuario.message}
+              </p>
+            )}
+          </div>
 
-        <FormField
-          control={form.control}
-          name="cpfusuario"
-          render={({ field }) => (
-            <FormItem >
-              <FormLabel>CPF:</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="000.000.000-00"
-                  value={String(field.value ?? '')}
-                  onChange={(e) => field.onChange(maskCPF(e.target.value))}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          {/* CPF */}
+          <div className="grid gap-1 md:col-span-2">
+            <Label>CPF</Label>
+            <Input
+              placeholder="000.000.000-00"
+              {...register("cpfusuario")}
+              onChange={(e) =>
+                setValue("cpfusuario", maskCPF(e.target.value))
+              }
+            />
+            {errors.cpfusuario && (
+              <p className="text-sm text-red-600">
+                {errors.cpfusuario.message}
+              </p>
+            )}
+          </div>
+        </CardContent>
 
-        <div className="md:col-span-2 py-2">
-          <Button type="submit" disabled={loading} className="w-full">
-            {loading ? 'Salvando...' : 'Salvar'}
+        <CardFooter>
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? "Salvando..." : "Salvar"}
           </Button>
-        </div>
+        </CardFooter>
       </form>
-    </Form>
+    </Card>
   );
 }

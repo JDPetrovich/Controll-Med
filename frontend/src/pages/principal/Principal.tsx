@@ -1,46 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "@/components/header/header";
 import { CreatePacienteModal } from "@/components/paciente/createPacienteModal";
 import { PacienteCard } from "@/components/paciente/pacienteCard";
 import { AddPacienteCard } from "@/components/paciente/addPacienteCard";
-import type { UsuarioOutput } from "@/schema/usuario.schema";
+import type { UsuarioFormInput } from "@/schema/usuario.schema";
 
 export default function Principal() {
     const [open, setOpen] = useState(false);
-    const [selectedPatient, setSelectedPatient] = useState<UsuarioOutput | null>(null);
+    const [pacientes, setPacientes] = useState<UsuarioFormInput[]>([]);
+    const [selectedPatient, setSelectedPatient] = useState<UsuarioFormInput | null>(null);
 
-   const patients: UsuarioOutput[] = [
-  {
-    nomeusuario: "João Silva",
-    idadeusuario: 32,
-    codusuario: "001",
-    senhausuario: "123456",
-    cpfusuario: "123.456.789-00",
-  },
-  {
-    nomeusuario: "Maria Oliveira",
-    idadeusuario: 28,
-    codusuario: "002",
-    senhausuario: "abcdef",
-    cpfusuario: "987.654.321-00",
-  },
-    {
-    nomeusuario: "João Silva",
-    idadeusuario: 32,
-    codusuario: "001",
-    senhausuario: "123456",
-    cpfusuario: "123.456.789-00",
-  },
-  {
-    nomeusuario: "Maria Oliveira",
-    idadeusuario: 28,
-    codusuario: "002",
-    senhausuario: "abcdef",
-    cpfusuario: "987.654.321-00",
-  },
-  
-];
+    const carregarPacientes = async () => {
+        const respostaIpc = await window.ipc.buscarUsuarios();
 
+        if (respostaIpc.sucesso) {
+            setPacientes(respostaIpc.dados);
+        } else {
+            console.error("Erro IPC:", respostaIpc.mensagem);
+        }
+    };
+
+    useEffect(() => {
+        carregarPacientes();
+    }, []);
 
     return (
         <div className="min-h-screen bg-background text-foreground">
@@ -57,15 +39,15 @@ export default function Principal() {
 
                     {/* GRID DOS CARDS */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        {patients.map((p, index) => (
+                        {pacientes.map((p, index) => (
                             <PacienteCard
                                 key={index}
                                 nome={p.nomeusuario}
-                                idade={String(p.idadeusuario)}
+                                idade={p.idadeusuario}
                                 cpf={p.cpfusuario}
                                 onClick={() => {
                                     console.log("Abrir detalhes do paciente");
-                                    // aqui navegar para a página de detalhes
+                                    // aqui vai navegar para a página de detalhes
                                 }}
                                 onEdit={() => {
                                     setSelectedPatient(p);
