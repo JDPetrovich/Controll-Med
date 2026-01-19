@@ -19,6 +19,7 @@ export function Header() {
 
     const menuItems = [
         { label: "Principal", path: "/principal" },
+        { label: "Remédios", path: "/remedios" },
     ]
 
     const location = useLocation()
