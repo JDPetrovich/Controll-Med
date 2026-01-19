@@ -42,6 +42,15 @@ export async function usuariohandle() {
         }
     })
 
+    ipcMain.handle("atualizar-usuario", async (_, dadosUsuario: IUsuario) => {
+        try {
+            await repo.atualizarUsuario(dadosUsuario);
+            return prepararRespostaUsuario([], true, "Usuário atualizado com sucesso!");
+        } catch (error) {
+            return prepararRespostaUsuario([], false, (error as Error).message);
+        }
+    })
+
     ipcMain.handle("deletar-usuario", async (_, sequsuario: number) => {
         try {
             await repo.deletarUsuario(sequsuario);

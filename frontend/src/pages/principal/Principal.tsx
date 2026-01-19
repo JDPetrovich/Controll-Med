@@ -24,12 +24,12 @@ export default function Principal() {
         }
     };
 
-    const criarPaciente = async (data: UsuarioFormOutput) => {
+    const criarEditarPaciente = async (data: UsuarioFormOutput) => {
 
         let respostaIpc;
 
         if (selectedPaciente?.sequsuario) {
-            respostaIpc = await window.ipc.editarUsuario({
+            respostaIpc = await window.ipc.atualizarUsuario({
                 ...data,
                 sequsuario: selectedPaciente.sequsuario
             });
@@ -126,7 +126,7 @@ export default function Principal() {
                 open={open}
                 onOpenChange={setOpen}
                 paciente={selectedPaciente}
-                onSave={criarPaciente}
+                onSave={criarEditarPaciente}
             />
 
             <ConfirmModal

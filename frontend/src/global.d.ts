@@ -12,6 +12,7 @@ declare global {
             
             buscarUsuarios: () => Promise<IUsuario>;
             criarUsuario: (dadosUsuario: UsuarioFormOutput) => Promise<RespostaIpc>;
+            atualizarUsuario: (dadosUsuario: UsuarioFormOutput) => Promise<RespostaIpc>;
             deletarUsuario: (sequsuario: number) => Promise<RespostaIpc>;
         }
     }
