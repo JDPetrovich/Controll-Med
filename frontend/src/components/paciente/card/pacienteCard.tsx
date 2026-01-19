@@ -1,5 +1,5 @@
 import { maskCPF } from "@/utils/maskCpf";
-import { Pencil } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 
 type Props = {
   nome: string;
@@ -7,9 +7,10 @@ type Props = {
   cpf: string;
   onClick?: () => void;
   onEdit?: () => void;
+  onDelete?: () => void;
 };
 
-export function PacienteCard({ nome, idade, cpf, onClick, onEdit }: Props) {
+export function PacienteCard({ nome, idade, cpf, onClick, onEdit, onDelete }: Props) {
   return (
     <div
       onClick={onClick}
@@ -28,21 +29,29 @@ export function PacienteCard({ nome, idade, cpf, onClick, onEdit }: Props) {
     relative
   "
     >
-      {/* BOTÃO DE EDITAR */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onEdit?.();
-        }}
-        className="
-    absolute top-2 right-2
-    p-2 rounded-full
-    hover:bg-slate-100
-    transition
-  "
-      >
-        <Pencil className="w-4 h-4  text-slate-500" />
-      </button>
+      <div className="flex-row justify-end absolute top-2 right-2 flex gap-2">
+        {/* BOTÃO DE EDITAR */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onEdit?.();
+          }}
+          className="p-2 rounded-full hover:bg-slate-100 transition "
+        >
+          <Pencil className="w-4 h-4  text-slate-500" />
+        </button>
+
+        {/* BOTÃO DE EXCLUIR   */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete?.();
+          }}
+          className="p-2 rounded-full hover:bg-slate-100 transition "
+        >
+          <Trash2 className="w-4 h-4  text-red-500" />
+        </button>
+      </div>
 
       <div>
         <p className="font-semibold text-slate-800 truncate">{nome}</p>

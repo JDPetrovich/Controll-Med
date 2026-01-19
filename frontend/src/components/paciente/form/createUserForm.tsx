@@ -17,10 +17,11 @@ import {
 
 type Props = {
   paciente?: UsuarioFormInput;
+  onSave: (data: UsuarioFormOutput) => Promise<void>;
   onSuccess?: () => void;
 };
 
-export function CreateUserForm({ paciente, onSuccess }: Props) {
+export function CreateUserForm({ paciente, onSuccess, onSave }: Props) {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -31,6 +32,7 @@ export function CreateUserForm({ paciente, onSuccess }: Props) {
     setValue,
     formState: { errors },
   } = useForm<UsuarioFormInput, any, UsuarioFormOutput>({
+    mode:"onChange",
     resolver: zodResolver(usuarioSchema),
     defaultValues: {
       nomeusuario: "",
@@ -50,31 +52,25 @@ export function CreateUserForm({ paciente, onSuccess }: Props) {
     }
   }, [paciente, reset]);
 
-  async function onSubmit(data: UsuarioFormOutput) {
+ async function handleFormSubmit(data: UsuarioFormOutput) {
     try {
       setLoading(true);
-
-      const payload: UsuarioFormOutput = {
-        ...data,
-        cpfusuario: data.cpfusuario.replace(/\D/g, ""),
-      };
-
-      console.log("Enviando para IPC:", payload);
-
-      await window.ipc.criarUsuario(payload);
+      const payload = { ...data, cpfusuario: data.cpfusuario.replace(/\D/g, "") };
+      
+      await onSave(payload); 
 
       onSuccess?.();
       reset();
-    } catch(error){
-      console.error("Erro ao criar usuário:", error);
-    }finally {
+    } catch(error) {
+      console.error("Erro no formulário:", error);
+    } finally {
       setLoading(false);
     }
   }
 
   return (
     <Card>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(handleFormSubmit)}>
         <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4 py-2">
 
           {/* Nome */}

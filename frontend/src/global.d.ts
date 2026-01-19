@@ -11,7 +11,8 @@ declare global {
             invoke: (channel: string, ...args: any[]) => Promise<any>;
             
             buscarUsuarios: () => Promise<IUsuario>;
-            criarUsuario: (dadosUsuario: UsuarioFormOutput) => Promise<void>;
+            criarUsuario: (dadosUsuario: UsuarioFormOutput) => Promise<RespostaIpc>;
+            deletarUsuario: (sequsuario: number) => Promise<RespostaIpc>;
         }
     }
 }
