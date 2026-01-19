@@ -42,6 +42,16 @@ class UsuarioRepository {
         await db.executar(query, parametros);
     }
 
+    async deletarUsuario(sequsuario: number): Promise<void> {
+        const query=`
+        DELETE FROM usuario
+        WHERE sequsuario = ?
+        `
+
+        const parametros = [sequsuario];
+
+        await db.executar(query, parametros);
+    }
 }
 
 export { UsuarioRepository };

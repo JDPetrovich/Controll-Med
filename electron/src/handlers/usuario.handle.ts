@@ -41,4 +41,13 @@ export async function usuariohandle() {
             return prepararRespostaUsuario([], false, (error as Error).message);
         }
     })
+
+    ipcMain.handle("deletar-usuario", async (_, sequsuario: number) => {
+        try {
+            await repo.deletarUsuario(sequsuario);
+            return prepararRespostaUsuario([], true, "Usuário deletado com sucesso!");
+        } catch (error) {
+            return prepararRespostaUsuario([], false, (error as Error).message);
+        }
+    })
 }
