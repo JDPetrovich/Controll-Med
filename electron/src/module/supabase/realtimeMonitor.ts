@@ -1,11 +1,47 @@
 import { getDatabase } from "../sqlitedb/dbInstance.js";
 import { getSupabase } from "./supabaseInstance.js";
 
-export function iniciarMonitoramentoRealtime() {
+export async function iniciarMonitoramentoRealtime() {
     const supabase = getSupabase();
     const db = getDatabase();
 
-    console.log("Monitoramento Realtime iniciado...");
+    console.log("Iniciando sincronização e monitoramento...");
+
+    try {
+        const { data, error } = await supabase
+            .from('historico_remedios')
+            .select('*');
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+            for (const historico of data) {
+                try {
+                    const query = `
+                    INSERT OR IGNORE INTO historico_remedios (
+                    seqhistorico, 
+                    sequsuario, 
+                    descremedio,
+                    status, 
+                    dataconfimacao
+                    ) VALUES (?, ?, ?, ?, ?)
+                    `
+                    const parametros = [
+                        historico.id,
+                        historico.sequsuario,
+                        historico.descricaoremedio,
+                        historico.status,
+                        historico.datahora
+                    ]
+                    await db.executar(query, parametros);
+                } catch (err) {
+                    console.error("Erro ao sincronizar historico:", historico.id, err);
+                }
+            }
+        }
+    } catch (error) {
+        console.error("Erro na sincronização inicial:", error);
+    }
 
     supabase
         .channel('fluxo-remedios')
@@ -18,17 +54,30 @@ export function iniciarMonitoramentoRealtime() {
             },
             async (payload) => {
                 const dados = payload.new;
-                console.log('Novo registro recebido do Supabase:', dados);
 
-                /*   try {
-                      await db.executar(
-                          "INSERT INTO historico_remedios (paciente_id, descricao_remedio, status, data_confirmacao) VALUES (?, ?, ?, ?)",
-                          [dados.paciente_id, dados.descricao_remedio, dados.status, dados.created_at]
-                      );
-                      
-                  } catch (error) {
-                      console.error("Erro ao salvar dados do Supabase no SQLite:", error);
-                  } */
+                try {
+                    const query = `
+                    INSERT INTO historico_remedios (
+                    seqhistorico, 
+                    sequsuario, 
+                    descremedio, 
+                    status, 
+                    dataconfimacao
+                    ) VALUES (?, ?, ?, ?, ?)
+                    `
+                    const porametros = [
+                        dados.id,
+                        dados.sequsuario,
+                        dados.descricaoremedio,
+                        dados.status,
+                        dados.datahora
+                    ]
+
+                    await db.executar(query, porametros);
+                } catch (error) {
+                    console.error("Erro ao salvar dados do Supabase no SQLite:", error);
+                }
+
             }
         )
         .subscribe();
