@@ -73,10 +73,10 @@ export default function Principal() {
     }, []);
 
     return (
-        <div className="min-h-screen text-gray-800">
+        <div className="h-screen flex flex-col text-gray-800 overflow-hidden">
             <Header />
 
-            <main className="flex flex-col items-center gap-6 mt-20">
+            <main className="flex-1 flex flex-col items-center gap-6 mt-16 p-6 overflow-hidden">
                 <h1 className="text-3xl font-semibold text-slate-800">
                     Seja bem-vindo
                 </h1>
@@ -85,39 +85,42 @@ export default function Principal() {
                 </p>
 
                 {/* CARD GRANDE */}
-                <div className="w-full max-w-7xl rounded-2xl p-6 bg-white border border-gray-200 shadow-sm">
-                    <h2 className="text-xl font-semibold text-slate-700 mb-4">
+                <div className="w-full max-w-7xl flex flex-col rounded-2xl bg-white border border-gray-200 shadow-sm overflow-hidden">
+                    <h2 className="text-xl font-semibold text-slate-700 px-6 py-2 ">
                         Pacientes
                     </h2>
 
                     {/* GRID DOS CARDS */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        {pacientes.map((p, index) => (
-                            <PacienteCard
-                                key={index}
-                                nome={p.nomeusuario}
-                                idade={p.idadeusuario}
-                                cpf={p.cpfusuario}
-                                onClick={() => {
-                                    console.log("Abrir detalhes do paciente");
-                                    // aqui vai navegar para a página de detalhes
-                                }}
-                                onEdit={() => {
-                                    setSelectedPaciente(p);
-                                    setOpen(true);
-                                }}
-                                onDelete={() => {
-                                    setSelectedPaciente(p);
-                                    setModalConfirm(true);
-                                }}
-                            />
-                        ))}
+                    <div className="flex-1 overflow-y-auto p-6 pt-2 custom-scrollbar">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
-                        {/* CARD DE ADICIONAR */}
-                        <AddPacienteCard onClick={() => {
-                            setSelectedPaciente(null);
-                            setOpen(true);
-                        }} />
+                            {/* CARD DE ADICIONAR */}
+                            <AddPacienteCard onClick={() => {
+                                setSelectedPaciente(null);
+                                setOpen(true);
+                            }} />
+
+                            {pacientes.map((p, index) => (
+                                <PacienteCard
+                                    key={index}
+                                    nome={p.nomeusuario}
+                                    idade={p.idadeusuario}
+                                    cpf={p.cpfusuario}
+                                    onClick={() => {
+                                        console.log("Abrir detalhes do paciente");
+                                        // aqui vai navegar para a página de detalhes
+                                    }}
+                                    onEdit={() => {
+                                        setSelectedPaciente(p);
+                                        setOpen(true);
+                                    }}
+                                    onDelete={() => {
+                                        setSelectedPaciente(p);
+                                        setModalConfirm(true);
+                                    }}
+                                />
+                            ))}
+                        </div>
                     </div>
                 </div>
             </main>

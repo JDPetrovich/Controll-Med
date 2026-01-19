@@ -99,7 +99,7 @@ class UsuarioRepository {
 
         if (error) throw new Error("Erro ao deletar usuario na nuvem: " + error.message);
 
-        const query = `DELETE FROM usuarioWHERE sequsuario = ?`;
+        const query = `DELETE FROM usuario WHERE sequsuario = ?`;
 
         const parametros = [sequsuario];
 

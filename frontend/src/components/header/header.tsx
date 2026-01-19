@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { useLocation, useNavigate } from "react-router-dom"
-import { useState } from "react"
+//import { useState } from "react"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -14,8 +14,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { LogOut, Settings } from "lucide-react"
 
 export function Header() {
-    const [showWarn, setShowWarn] = useState(false)
-    const [nextPath, setNextPath] = useState<string | null>(null)
+    //const [showWarn, setShowWarn] = useState(false)
+    //const [nextPath, setNextPath] = useState<string | null>(null)
 
     const menuItems = [
         { label: "Principal", path: "/principal" },
@@ -27,14 +27,14 @@ export function Header() {
     const currentPath = location.pathname
 
     const handleNavigate = (path: string) => {
-        const isLeavingImportacao = currentPath === "/principal" && path !== "/principal"
+        /* const isLeavingImportacao = currentPath === "/principal" && path !== "/principal"
         const dadosTemp = JSON.parse(sessionStorage.getItem("import-temp") || "[]")
 
         if (isLeavingImportacao && Array.isArray(dadosTemp) && dadosTemp.length > 0) {
             setNextPath(path)
             setShowWarn(true)
             return
-        }
+        } */
         navigate(path)
     }
 
